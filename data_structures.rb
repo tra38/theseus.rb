@@ -25,8 +25,8 @@ class DataStructure
     structure.send(:"#{remove_method}")
   end
 
-  def merge(arary)
-    array.each do |element|
+  def merge(new_array)
+    new_array.each do |element|
       self.add(element)
     end
   end
