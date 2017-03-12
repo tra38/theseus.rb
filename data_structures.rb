@@ -4,6 +4,7 @@
 
 class DataStructure
   attr_reader :add, :remove, :add_method, :remove_method, :structure
+
   def initialize(type)
     @structure = []
     if type == :stack
