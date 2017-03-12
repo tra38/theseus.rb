@@ -3,7 +3,7 @@ require 'pry'
 array_of_arrays = []
 
 File.foreach("maze.txt") do |line|
-  array_of_arrays << line.split("")
+  array_of_arrays << line.chomp.split("")
 end
 
 UP_BOUNDARY = 0
