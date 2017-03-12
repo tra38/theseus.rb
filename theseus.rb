@@ -44,6 +44,7 @@ def find_nearby_tuples(floor_number, room_number)
     tuples << { direction: :right, tuple: [floor_number, room_number + 1] }
   end
 
+  tuples
 end
 
 def print_movement(start_tuple, array_of_arrays)
