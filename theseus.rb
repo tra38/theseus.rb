@@ -1,4 +1,5 @@
 require 'pry'
+require_relative 'data_structures'
 
 array_of_arrays = []
 
@@ -29,19 +30,19 @@ def find_nearby_tuples(floor_number, room_number)
   tuples = []
 
   if floor_number > UP_BOUNDARY
-    tuples << { direction: :up, tuple: [floor_number - 1, room_number] }
+    tuples << [floor_number - 1, room_number]
   end
 
   if floor_number < DOWN_BOUNDARY
-    tuples << { direction: :down, tuple: [floor_number + 1, room_number] }
+    tuples << [floor_number + 1, room_number]
   end
 
   if room_number > LEFT_BOUNDARY
-    tuples << { direction: :left, tuple: [floor_number, room_number - 1] }
+    tuples << [floor_number, room_number - 1]
   end
 
   if room_number < RIGHT_BOUNDARY
-    tuples << { direction: :right, tuple: [floor_number, room_number + 1] }
+    tuples << [floor_number, room_number + 1]
   end
 
   tuples
@@ -64,27 +65,31 @@ def print_movement(start_tuple, array_of_arrays)
   sleep(1)
 end
 
-def depth_first_search(floor_number, room_number, array_of_arrays, dict, path)
-  nearby_tuples = find_nearby_tuples(floor_number, room_number)
+def search(floor_number: floor_number, room_number: room_number, array: array_of_arrays, dict: dict, path: path, structure: structure)
+  structure.merge(find_nearby_tuples(floor_number, room_number))
 
-  if nearby_tuples
-    nearby_tuples.each do |tuple_hash|
-      tuple = tuple_hash[:tuple]
-      unless path.include? tuple
-        new_path = path.dup
-        move_to_goal(tuple, array_of_arrays, dict, new_path)
-      end
-    end
+  until structure.empty?
+    tuple = structure.remove
+    visit_tuple(tuple, structure, array, dict, path) unless path.include? tuple
   end
 end
 
+def visit_tuple(tuple, structure, array_of_arrays, dict, path)
+  if mark_space(tuple, array_of_arrays, dict, path)
 
-def move_to_goal(start_tuple, array_of_arrays, dict, path=[])
+    path << tuple
+
+    floor_number = tuple[0]
+    room_number = tuple[1]
+
+    structure.merge(find_nearby_tuples(floor_number, room_number))
+  end
+end
+
+def mark_space(start_tuple, array_of_arrays, dict, path)
 
   floor_number = start_tuple[0]
   room_number = start_tuple[1]
-
-  path << start_tuple
 
   position = array_of_arrays[floor_number][room_number]
 
@@ -92,7 +97,9 @@ def move_to_goal(start_tuple, array_of_arrays, dict, path=[])
     print_movement(start_tuple, array_of_arrays)
     puts "We found the goal! Here's the path we took!"
     p path
-  elsif (position == dict[:wall] || position == dict[:visited])
+    sleep(1)
+    false
+  elsif (position == dict[:wall] || position == dict[:visited] || position == dict[:start])
     false
   else
     # mark that it has been completed
@@ -100,14 +107,28 @@ def move_to_goal(start_tuple, array_of_arrays, dict, path=[])
 
     # print the movement
     print_movement(start_tuple, array_of_arrays)
-
-    # do depth_first_search
-    depth_first_search(floor_number, room_number, array_of_arrays, dict, path)
+    true
   end
+end
+
+
+def move_to_goal(start_tuple, array_of_arrays, dict, data_structure_type)
+
+  structure = DataStructure.new(data_structure_type)
+
+  path = []
+
+  floor_number = start_tuple[0]
+  room_number = start_tuple[1]
+  search(floor_number: floor_number, room_number: room_number, array: array_of_arrays, dict: dict, path: path, structure: structure)
 end
 
 p array_of_arrays
 
 start_tuple = search_array(array_of_arrays, dict[:start])
 
-move_to_goal(start_tuple, array_of_arrays, dict)
+# Depth-First Search
+# move_to_goal(start_tuple, array_of_arrays, dict, :stack)
+
+# Breadth-First Search
+move_to_goal(start_tuple, array_of_arrays, dict, :queue)
