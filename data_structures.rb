@@ -30,4 +30,8 @@ class DataStructure
       self.add(element)
     end
   end
+
+  def empty?
+    structure.empty?
+  end
 end
