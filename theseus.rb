@@ -1,9 +1,13 @@
-require 'pry'
 require_relative 'data_structures'
 
+path_to_maze = ARGV[0]
 array_of_arrays = []
 
-File.foreach("maze.txt") do |line|
+unless path_to_maze
+  raise "You need to provide a path!"
+end
+
+File.foreach(path_to_maze) do |line|
   array_of_arrays << line.chomp.split("")
 end
 
