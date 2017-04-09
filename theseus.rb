@@ -158,6 +158,8 @@ def recursive_print(path, start_tuple, final_array, starting_point, dict)
   if starting_point == start_tuple
     print_final_map(final_array, FINAL_MAP, dict)
     p final_array
+    puts "Tiles Explored: #{path.keys.count}"
+    puts "Length of Path: #{final_array.count}"
   else
     previous_tuple = path[start_tuple]
     recursive_print(path, previous_tuple, final_array, starting_point, dict)
