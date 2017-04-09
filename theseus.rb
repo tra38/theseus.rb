@@ -1,4 +1,5 @@
 require_relative 'data_structures'
+require 'pry'
 
 path_to_maze = ARGV[0]
 array_of_arrays = []
@@ -74,19 +75,30 @@ def search(floor_number: floor_number, room_number: room_number, array: array_of
 
   until structure.empty?
     tuple = structure.remove
-    visit_tuple(tuple, structure, array, dict, path) unless path.include? tuple
+    visit_tuple(tuple, structure, array, dict, path)
   end
 end
 
 def visit_tuple(tuple, structure, array_of_arrays, dict, path)
   if mark_space(tuple, array_of_arrays, dict, path)
 
-    path << tuple
-
     floor_number = tuple[0]
     room_number = tuple[1]
 
     structure.merge(find_nearby_tuples(floor_number, room_number))
+
+    mark_tuples(tuple, path)
+  end
+end
+
+def mark_tuples(tuple, path)
+  floor_number = tuple[0]
+  room_number = tuple[1]
+
+  find_nearby_tuples(floor_number, room_number).each do |new_tuple|
+    unless path.include? new_tuple
+      path[new_tuple] = tuple
+    end
   end
 end
 
@@ -99,10 +111,14 @@ def mark_space(start_tuple, array_of_arrays, dict, path)
 
   if position == dict[:goal]
     print_movement(start_tuple, array_of_arrays)
+
     puts "We found the goal! Here's the path we took!"
-    p path
+
+    starting_point = search_array(array_of_arrays, dict[:start])
+
+    recursive_print(path, start_tuple, [start_tuple], starting_point)
     sleep(1)
-    false
+    abort
   elsif (position == dict[:wall] || position == dict[:visited] || position == dict[:start])
     false
   else
@@ -115,12 +131,25 @@ def mark_space(start_tuple, array_of_arrays, dict, path)
   end
 end
 
+def recursive_print(path, start_tuple, final_array, starting_point)
+  final_array << start_tuple
+  if starting_point == start_tuple
+    p final_array
+  else
+    previous_tuple = path[start_tuple]
+    recursive_print(path, previous_tuple, final_array, starting_point)
+  end
+end
 
 def move_to_goal(start_tuple, array_of_arrays, dict, data_structure_type)
 
   structure = DataStructure.new(data_structure_type)
 
-  path = []
+  path = Hash.new
+
+  path[start_tuple] = nil
+
+  mark_tuples(start_tuple, path)
 
   floor_number = start_tuple[0]
   room_number = start_tuple[1]
@@ -132,7 +161,7 @@ p array_of_arrays
 start_tuple = search_array(array_of_arrays, dict[:start])
 
 # Depth-First Search
-# move_to_goal(start_tuple, array_of_arrays, dict, :stack)
+move_to_goal(start_tuple, array_of_arrays, dict, :stack)
 
 # Breadth-First Search
-move_to_goal(start_tuple, array_of_arrays, dict, :queue)
+# move_to_goal(start_tuple, array_of_arrays, dict, :queue)
