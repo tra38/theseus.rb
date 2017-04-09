@@ -166,7 +166,7 @@ end
 
 def move_to_goal(start_tuple, array_of_arrays, dict, data_structure_type)
 
-  structure = DataStructure.new(data_structure_type)
+  structure = DataStructure.new(type: data_structure_type, start_tuple: start_tuple)
 
   path = Hash.new
 
@@ -184,7 +184,10 @@ p array_of_arrays
 start_tuple = search_array(array_of_arrays, dict[:start])
 
 # Depth-First Search
-move_to_goal(start_tuple, array_of_arrays, dict, :stack)
+# move_to_goal(start_tuple, array_of_arrays, dict, :stack)
 
 # Breadth-First Search
 # move_to_goal(start_tuple, array_of_arrays, dict, :queue)
+
+# Manhattan-First Search
+move_to_goal(start_tuple, array_of_arrays, dict, :manhattan)
