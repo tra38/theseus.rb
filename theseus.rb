@@ -138,7 +138,7 @@ def mark_space(start_tuple, array_of_arrays, dict, path)
 
     starting_point = search_array(array_of_arrays, dict[:start])
 
-    recursive_print(path, start_tuple, [start_tuple], starting_point, dict)
+    recursive_print(path, start_tuple, [], starting_point, dict)
     sleep(1)
     abort
   elsif (position == dict[:wall] || position == dict[:visited] || position == dict[:start])
