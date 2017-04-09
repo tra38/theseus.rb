@@ -12,6 +12,8 @@ File.foreach(path_to_maze) do |line|
   array_of_arrays << line.chomp.split("")
 end
 
+FINAL_MAP = Marshal.load(Marshal.dump(array_of_arrays))
+
 UP_BOUNDARY = 0
 DOWN_BOUNDARY = (array_of_arrays.length - 1)
 LEFT_BOUNDARY = 0
@@ -70,6 +72,28 @@ def print_movement(start_tuple, array_of_arrays)
   sleep(1)
 end
 
+def print_final_map(final_array, final_map, dict)
+
+  final_array.each do |tuple|
+    floor_number = tuple[0]
+    room_number = tuple[1]
+
+    position = final_map[floor_number][room_number]
+
+    unless (position == dict[:wall] || position == dict[:visited] || position == dict[:start] || position == dict[:goal])
+      final_map[floor_number][room_number] = "X"
+    end
+  end
+
+  print "\e[2J\e[f"
+
+  puts "We found the goal! Here's the path we took!"
+
+  final_map.each do |array|
+    puts array.join("")
+  end
+end
+
 def search(floor_number: floor_number, room_number: room_number, array: array_of_arrays, dict: dict, path: path, structure: structure)
   structure.merge(find_nearby_tuples(floor_number, room_number))
 
@@ -112,11 +136,9 @@ def mark_space(start_tuple, array_of_arrays, dict, path)
   if position == dict[:goal]
     print_movement(start_tuple, array_of_arrays)
 
-    puts "We found the goal! Here's the path we took!"
-
     starting_point = search_array(array_of_arrays, dict[:start])
 
-    recursive_print(path, start_tuple, [start_tuple], starting_point)
+    recursive_print(path, start_tuple, [start_tuple], starting_point, dict)
     sleep(1)
     abort
   elsif (position == dict[:wall] || position == dict[:visited] || position == dict[:start])
@@ -131,13 +153,14 @@ def mark_space(start_tuple, array_of_arrays, dict, path)
   end
 end
 
-def recursive_print(path, start_tuple, final_array, starting_point)
+def recursive_print(path, start_tuple, final_array, starting_point, dict)
   final_array << start_tuple
   if starting_point == start_tuple
+    print_final_map(final_array, FINAL_MAP, dict)
     p final_array
   else
     previous_tuple = path[start_tuple]
-    recursive_print(path, previous_tuple, final_array, starting_point)
+    recursive_print(path, previous_tuple, final_array, starting_point, dict)
   end
 end
 
