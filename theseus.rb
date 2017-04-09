@@ -94,7 +94,7 @@ def print_final_map(final_array, final_map, dict)
   end
 end
 
-def search(floor_number: floor_number, room_number: room_number, array: array_of_arrays, dict: dict, path: path, structure: structure)
+def search(floor_number:, room_number:, array:, dict:, path:, structure:)
   structure.merge(find_nearby_tuples(floor_number, room_number))
 
   until structure.empty?
