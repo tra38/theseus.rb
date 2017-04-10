@@ -1,4 +1,5 @@
 require './priority_queue'
+require 'pry'
 
 class ManhattanQueue
   attr_reader :queue, :destination_tuple
@@ -9,7 +10,7 @@ class ManhattanQueue
 
   def add(element)
     priority = calculate_priority(element, destination_tuple)
-    queue.add(element, priority)
+    queue.add(element, -priority)
   end
 
   def pull

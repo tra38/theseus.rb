@@ -8,7 +8,7 @@ require_relative 'manhattan_queue'
 class DataStructure
   attr_reader :add, :remove, :add_method, :remove_method, :structure, :priority
 
-  def initialize(type:, start_tuple:)
+  def initialize(type:, destination_tuple:)
     case type
     when :stack
       @structure = []
@@ -19,7 +19,7 @@ class DataStructure
       @add_method = :push #new plate gets placed
       @remove_method = :shift #last plate gets taken
     when :manhattan
-      @structure = ManhattanQueue.new(start_tuple)
+      @structure = ManhattanQueue.new(destination_tuple)
       @add_method = :add
       @remove_method = :pull
     else

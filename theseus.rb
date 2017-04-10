@@ -168,7 +168,7 @@ end
 
 def move_to_goal(start_tuple, array_of_arrays, dict, data_structure_type)
 
-  structure = DataStructure.new(type: data_structure_type, start_tuple: start_tuple)
+  structure = create_structure(data_structure_type: data_structure_type, array_of_arrays: array_of_arrays, dict: dict)
 
   path = Hash.new
 
@@ -180,6 +180,13 @@ def move_to_goal(start_tuple, array_of_arrays, dict, data_structure_type)
   room_number = start_tuple[1]
   search(floor_number: floor_number, room_number: room_number, array: array_of_arrays, dict: dict, path: path, structure: structure)
 end
+
+def create_structure(data_structure_type:,array_of_arrays:,dict:)
+  destination_tuple = search_array(array_of_arrays, dict[:goal])
+
+  DataStructure.new(type: data_structure_type, destination_tuple: destination_tuple)
+end
+
 
 p array_of_arrays
 
