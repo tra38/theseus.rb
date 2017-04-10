@@ -6,6 +6,6 @@ RSpec.describe ManhattanQueue do
     start_tuple = [0,0]
     queue = ManhattanQueue.new(destination_tuple)
     queue.add(start_tuple)
-    expect(queue.highest_priority).to eq([[0,0], 200])
+    expect(queue.highest_priority).to eq([[0,0], -200])
   end
 end
