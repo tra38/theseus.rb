@@ -41,4 +41,24 @@ RSpec.describe PriorityQueue do
     queue.add("foo", 3)
     expect(queue.pull).to eq("foo")
   end
+
+  it "provide the proper order based on negative inputs" do
+    queue = PriorityQueue.new
+    queue.add("foo", -1)
+    queue.add("bar", -2)
+    queue.add("baz", -3)
+
+    blank_array = []
+
+    3.times do
+      blank_array << queue.pull
+    end
+
+    expect(blank_array).to eq(["foo", "bar", "baz"])
+  end
+
+  it "can call #pull on an empty queue" do
+    queue = PriorityQueue.new
+    expect(queue.pull).to eq(nil)
+  end
 end
