@@ -57,8 +57,8 @@ RSpec.describe PriorityQueue do
     expect(blank_array).to eq(["foo", "bar", "baz"])
   end
 
-  it "can call #pull on an empty queue" do
+  it "raise Exception if #pull is called on an empty queue" do
     queue = PriorityQueue.new
-    expect(queue.pull).to eq(nil)
+    expect { queue.pull }.to raise_error RuntimeError
   end
 end
