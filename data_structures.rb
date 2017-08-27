@@ -5,10 +5,12 @@
 # PriorityQueues are like queues except that each element also has a priority. The "Manhattan Queue" is a PriorityQueue that assigns priority based on Manhattan distance (in the future, I may need to make an abstract queue that accepts artibrary heuristics).
 
 require_relative 'manhattan_queue'
+require_relative 'a_star_queue'
 class DataStructure
-  attr_reader :add, :remove, :add_method, :remove_method, :structure, :priority
+  attr_reader :add, :remove, :add_method, :remove_method, :structure, :priority, :type
 
-  def initialize(type:, destination_tuple:)
+  def initialize(type:, start_tuple:,destination_tuple:)
+    @type = type
     case type
     when :stack
       @structure = []
@@ -22,22 +24,30 @@ class DataStructure
       @structure = ManhattanQueue.new(destination_tuple)
       @add_method = :add
       @remove_method = :pull
+    when :a_star
+      @structure = AStarQueue.new(start_tuple: start_tuple, destination_tuple: destination_tuple)
+      @add_method = :add
+      @remove_method = :pull
     else
       raise "I don't understand this structure!"
     end
   end
 
-  def add(argument)
-    structure.send(:"#{add_method}", argument)
+  def add(*arguments)
+    structure.send(:"#{add_method}", *arguments)
   end
 
   def remove
     structure.send(:"#{remove_method}")
   end
 
-  def merge(new_array)
+  def merge(new_array, prior_tuple)
     new_array.each do |element|
-      self.add(element)
+      if type == :a_star
+        self.add(element, prior_tuple)
+      else
+        self.add(element)
+      end
     end
   end
 

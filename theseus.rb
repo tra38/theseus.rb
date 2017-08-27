@@ -95,7 +95,7 @@ def print_final_map(final_array, final_map, dict)
 end
 
 def search(floor_number:, room_number:, array:, dict:, path:, structure:)
-  structure.merge(find_nearby_tuples(floor_number, room_number))
+  structure.merge(find_nearby_tuples(floor_number, room_number), [floor_number, room_number])
 
   until structure.empty?
     tuple = structure.remove
@@ -109,7 +109,7 @@ def visit_tuple(tuple, structure, array_of_arrays, dict, path)
     floor_number = tuple[0]
     room_number = tuple[1]
 
-    structure.merge(find_nearby_tuples(floor_number, room_number))
+    structure.merge(find_nearby_tuples(floor_number, room_number), tuple)
 
     mark_tuples(tuple, path)
   end
@@ -182,9 +182,10 @@ def move_to_goal(start_tuple, array_of_arrays, dict, data_structure_type)
 end
 
 def create_structure(data_structure_type:,array_of_arrays:,dict:)
+  start_tuple = search_array(array_of_arrays, dict[:start])
   destination_tuple = search_array(array_of_arrays, dict[:goal])
 
-  DataStructure.new(type: data_structure_type, destination_tuple: destination_tuple)
+  DataStructure.new(type: data_structure_type, start_tuple: start_tuple, destination_tuple: destination_tuple)
 end
 
 
@@ -193,10 +194,13 @@ p array_of_arrays
 start_tuple = search_array(array_of_arrays, dict[:start])
 
 # Depth-First Search
-# move_to_goal(start_tuple, array_of_arrays, dict, :stack)
+move_to_goal(start_tuple, array_of_arrays, dict, :stack)
 
 # Breadth-First Search
 # move_to_goal(start_tuple, array_of_arrays, dict, :queue)
 
 # Manhattan-First Search
-move_to_goal(start_tuple, array_of_arrays, dict, :manhattan)
+# move_to_goal(start_tuple, array_of_arrays, dict, :manhattan)
+
+#A-Star Search
+#move_to_goal(start_tuple, array_of_arrays, dict, :a_star)
