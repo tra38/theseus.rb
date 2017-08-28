@@ -299,3 +299,5 @@ We found the goal! Here's the path we took!
 [[28, 18], [27, 18], [26, 18], [25, 18], [24, 18], [23, 18], [22, 18], [21, 18], [20, 18], [19, 18], [18, 18], [17, 18], [16, 18], [15, 18], [14, 18], [13, 18], [12, 18], [11, 18], [10, 18], [9, 18], [8, 18], [7, 18], [6, 18], [5, 18], [4, 18], [3, 18], [2, 18], [1, 18], [1, 17], [1, 16], [2, 16], [3, 16], [3, 15], [3, 14], [3, 13], [3, 12], [3, 11], [3, 10], [3, 9], [3, 8], [3, 7], [3, 6], [3, 5], [3, 4]]
 Tiles Explored: 436
 Length of Path: 44
+
+The A* algorithm finds a route that is of the same length as the Breadth-First Approach, but is *much* faster...which would explain why people tend to prefer using it. Wikipedia claims that there are multiple ways to optimize the A* algorithms further for performance reasons. But vanillia A* is still pretty popular. In these experiments, we're also ignoring a major advantage of the A* algorithm - taking into account variable movement costs.
