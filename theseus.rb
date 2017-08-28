@@ -19,7 +19,7 @@ DOWN_BOUNDARY = (array_of_arrays.length - 1)
 LEFT_BOUNDARY = 0
 RIGHT_BOUNDARY = (array_of_arrays[0].length - 1)
 
-dict = { :start => "o", :goal => "*", :tile => ".", :wall => "#", :visited => "X"}
+dict = { :start => "o", :goal => "*", :tile => ".", :wall => "#", :visited => "X", :teleport => "@"}
 
 def search_array(array_of_arrays, target_element)
   array_of_arrays.each_with_index do |array, floor_number|
@@ -30,6 +30,18 @@ def search_array(array_of_arrays, target_element)
     end
   end
   return nil
+end
+
+def deep_search_array(array_of_arrays, target_element)
+  output_array = []
+  array_of_arrays.each_with_index do |array, floor_number|
+    array.each_with_index do |element, room_number|
+      if element == target_element
+        output_array << [floor_number, room_number]
+      end
+    end
+  end
+  output_array
 end
 
 def find_nearby_tuples(floor_number, room_number)
@@ -52,7 +64,26 @@ def find_nearby_tuples(floor_number, room_number)
     tuples << [floor_number, room_number + 1]
   end
 
+  if found_teleporter?(FINAL_MAP, floor_number, room_number)
+    deep_search_array(FINAL_MAP, "@").each do |candidate_tuple|
+
+      unless (candidate_tuple[0] == floor_number && candidate_tuple[1] == room_number)
+        tuples << candidate_tuple
+      end
+    end
+  end
+
   tuples
+end
+
+def found_teleporter?(final_map, floor_number, room_number)
+  deep_search_array(FINAL_MAP, "@").each do |candidate_tuple|
+    if (candidate_tuple[0] == floor_number && candidate_tuple[1] == room_number)
+      return true
+    end
+  end
+
+  return false
 end
 
 def print_movement(start_tuple, array_of_arrays)
@@ -80,7 +111,7 @@ def print_final_map(final_array, final_map, dict)
 
     position = final_map[floor_number][room_number]
 
-    unless (position == dict[:wall] || position == dict[:visited] || position == dict[:start] || position == dict[:goal])
+    unless (position == dict[:wall] || position == dict[:visited] || position == dict[:start] || position == dict[:goal] || position == dict[:teleport])
       final_map[floor_number][room_number] = "X"
     end
   end
@@ -203,4 +234,4 @@ move_to_goal(start_tuple, array_of_arrays, dict, :stack)
 # move_to_goal(start_tuple, array_of_arrays, dict, :manhattan)
 
 #A-Star Search
-#move_to_goal(start_tuple, array_of_arrays, dict, :a_star)
+# move_to_goal(start_tuple, array_of_arrays, dict, :a_star)
