@@ -9,7 +9,7 @@ require_relative 'a_star_queue'
 class DataStructure
   attr_reader :add, :remove, :add_method, :remove_method, :structure, :priority, :type
 
-  def initialize(type:, start_tuple:,destination_tuple:)
+  def initialize(type:, start_tuple:,destination_tuple:,teleporter_tuples:)
     @type = type
     case type
     when :stack
@@ -25,7 +25,7 @@ class DataStructure
       @add_method = :add
       @remove_method = :pull
     when :a_star
-      @structure = AStarQueue.new(start_tuple: start_tuple, destination_tuple: destination_tuple)
+      @structure = AStarQueue.new(start_tuple: start_tuple, destination_tuple: destination_tuple, teleporter_tuples: teleporter_tuples)
       @add_method = :add
       @remove_method = :pull
     else

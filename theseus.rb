@@ -216,7 +216,9 @@ def create_structure(data_structure_type:,array_of_arrays:,dict:)
   start_tuple = search_array(array_of_arrays, dict[:start])
   destination_tuple = search_array(array_of_arrays, dict[:goal])
 
-  DataStructure.new(type: data_structure_type, start_tuple: start_tuple, destination_tuple: destination_tuple)
+  teleporter_tuples = deep_search_array(FINAL_MAP, "@")
+
+  DataStructure.new(type: data_structure_type, start_tuple: start_tuple, destination_tuple: destination_tuple, teleporter_tuples: teleporter_tuples)
 end
 
 
@@ -225,7 +227,7 @@ p array_of_arrays
 start_tuple = search_array(array_of_arrays, dict[:start])
 
 # Depth-First Search
-move_to_goal(start_tuple, array_of_arrays, dict, :stack)
+# move_to_goal(start_tuple, array_of_arrays, dict, :stack)
 
 # Breadth-First Search
 # move_to_goal(start_tuple, array_of_arrays, dict, :queue)
@@ -234,4 +236,4 @@ move_to_goal(start_tuple, array_of_arrays, dict, :stack)
 # move_to_goal(start_tuple, array_of_arrays, dict, :manhattan)
 
 #A-Star Search
-# move_to_goal(start_tuple, array_of_arrays, dict, :a_star)
+move_to_goal(start_tuple, array_of_arrays, dict, :a_star)

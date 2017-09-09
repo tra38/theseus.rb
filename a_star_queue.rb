@@ -1,13 +1,14 @@
 require './priority_queue'
 
 class AStarQueue
-  attr_reader :queue, :start_tuple, :destination_tuple, :cost_so_far_hash, :came_from
+  attr_reader :queue, :start_tuple, :destination_tuple, :cost_so_far_hash, :came_from, :teleporter_tuples
 
-  def initialize(start_tuple:, destination_tuple:)
+  def initialize(start_tuple:, destination_tuple:,teleporter_tuples:)
     @queue = PriorityQueue.new
     @start_tuple = start_tuple
     @cost_so_far_hash = Hash.new(0)
     @destination_tuple = destination_tuple
+    @teleporter_tuples = teleporter_tuples.combination(2)
   end
 
   def add(element, prior_tuple)
@@ -38,7 +39,25 @@ class AStarQueue
   end
 
   def heuristic(element, tuple)
-    (element[0] - tuple[0]).abs + (element[1] - tuple[1]).abs
+    normal_distance = manhattan_distance(element, tuple)
+
+    min_distance = normal_distance
+
+    teleporter_tuples.each do |combination|
+      initial_teleporter = combination[0]
+      destination_teleporter = combination[1]
+      possible_route = manhattan_distance(element, initial_teleporter) + manhattan_distance(destination_teleporter, tuple)
+
+      if possible_route < normal_distance
+        min_distance = possible_route
+      end
+    end
+
+    min_distance
+  end
+
+  def manhattan_distance(element_a, element_b)
+    (element_a[0] - element_b[0]).abs + (element_a[1] - element_b[1]).abs
   end
 
   def highest_priority
