@@ -21,7 +21,7 @@ class DataStructure
       @add_method = :push #new plate gets placed
       @remove_method = :shift #last plate gets taken
     when :manhattan
-      @structure = ManhattanQueue.new(destination_tuple)
+      @structure = ManhattanQueue.new(destination_tuple: destination_tuple, teleporter_tuples: teleporter_tuples)
       @add_method = :add
       @remove_method = :pull
     when :a_star
