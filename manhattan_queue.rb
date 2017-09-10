@@ -1,11 +1,15 @@
 require './priority_queue'
-require 'pry'
+require './manhattan_heuristic'
 
 class ManhattanQueue
-  attr_reader :queue, :destination_tuple
-  def initialize(destination_tuple)
+  attr_reader :queue, :destination_tuple, :teleporter_tuples
+
+  include ManhattanHeuristic
+
+  def initialize(destination_tuple:, teleporter_tuples:)
     @queue = PriorityQueue.new
     @destination_tuple = destination_tuple
+    @teleporter_tuples = teleporter_tuples.combination(2)
   end
 
   def add(element)
@@ -22,7 +26,7 @@ class ManhattanQueue
   end
 
   def calculate_priority(element, destination_tuple)
-    (element[0] - destination_tuple[0]).abs + (element[1] - destination_tuple[1]).abs
+    heuristic(element, destination_tuple)
   end
 
   def highest_priority

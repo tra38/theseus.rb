@@ -18,7 +18,7 @@ module ManhattanHeuristic
   def determine_teleporter_route_distance(combination, element, destination)
     initial_teleporter = combination[0]
     destination_teleporter = combination[1]
-    possible_route = manhattan_distance(element, initial_teleporter) + manhattan_distance(destination_teleporter, destination)
+    manhattan_distance(element, initial_teleporter) + manhattan_distance(destination_teleporter, destination) + 1
   end
 
 end
