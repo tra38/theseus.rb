@@ -4,7 +4,7 @@
 
 # PriorityQueues are like queues except that each element also has a priority. The "Manhattan Queue" is a PriorityQueue that assigns priority based on Manhattan distance (in the future, I may need to make an abstract queue that accepts artibrary heuristics).
 
-require_relative 'manhattan_queue'
+require_relative 'best_first_queue'
 require_relative 'a_star_queue'
 class DataStructure
   attr_reader :add, :remove, :add_method, :remove_method, :structure, :priority, :type
@@ -20,8 +20,8 @@ class DataStructure
       @structure = []
       @add_method = :push #new plate gets placed
       @remove_method = :shift #last plate gets taken
-    when :manhattan
-      @structure = ManhattanQueue.new(destination_tuple: destination_tuple, teleporter_tuples: teleporter_tuples)
+    when :best_first
+      @structure = BestFirstQueue.new(destination_tuple: destination_tuple, teleporter_tuples: teleporter_tuples)
       @add_method = :add
       @remove_method = :pull
     when :a_star

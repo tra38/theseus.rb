@@ -1,7 +1,7 @@
 require './priority_queue'
 require './manhattan_heuristic'
 
-class ManhattanQueue
+class BestFirstQueue
   attr_reader :queue, :destination_tuple, :teleporter_tuples
 
   include ManhattanHeuristic

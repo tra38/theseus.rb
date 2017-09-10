@@ -232,8 +232,8 @@ start_tuple = search_array(array_of_arrays, dict[:start])
 # Breadth-First Search
 # move_to_goal(start_tuple, array_of_arrays, dict, :queue)
 
-# Manhattan-First Search
-move_to_goal(start_tuple, array_of_arrays, dict, :manhattan)
+# Best-First Search
+move_to_goal(start_tuple, array_of_arrays, dict, :best_first)
 
 #A-Star Search
 # move_to_goal(start_tuple, array_of_arrays, dict, :a_star)
